@@ -1,0 +1,203 @@
+doctype html
+html
+   head
+      title Immersive Reader Homework Application
+
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css')
+
+      // A polyfill for Promise is needed for IE11 support.
+      script(src='https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js')
+
+      script(src='https://contentstorage.onenote.office.net/onenoteltir/immersivereadersdk/immersive-reader-sdk.1.0.0.js')
+      script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+
+      style(type="text/css").
+        .immersive-reader-button {
+          background-color: white;
+          margin-top: 5px;
+          border: 1px solid black;
+          float: right;
+        }
+        #getFileContent {
+          background-color: white;
+          margin-top: 5px;
+          border: 1px solid black;
+          float: left;
+        }
+        .textarea-container {
+            display:inline-block;
+            position:relative;
+            left: 40%;
+        }
+        .textarea-container textarea {
+            display:block;
+        }
+        .textarea-container button {
+            position:absolute;
+            bottom:10px;
+            right:10px;
+        }
+        }
+   body
+      div(class="container")
+        br
+        form(id="fileForm" enctype="multipart/form-data")
+          input(id="file" type="file" name="file")
+          button(id="getFileContent" data-button-style="iconAndText" data-locale="en" type="button") Examine File        
+        button(class="immersive-reader-button" data-button-style="iconAndText" data-locale="en")
+      div(class="textarea-container")
+        textarea(id="learningContent", name="learningContent", cols="50", rows="10") I sea you over thr my frnd, hello
+        button(id="CorrectSpelling" type="button") Correct spelling 
+      button(id="Logout" type="button" style="position:absolute;top:50%;left:50%;") Log out
+        
+
+
+
+
+
+script(type="text/javascript").
+  function getTokenAndSubdomainAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/GetTokenAndSubdomain",
+                type: "GET",
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function AnalyzeFileAsync() {
+        var fd = new FormData();
+        var file = $('#file')[0].files[0]; 'image',
+        fd.append('plm','asdasd');
+        fd.append('file', file);
+        console.log(fd.get('file'))
+        console.log(file);
+
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/AnalyzeFile",
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+    
+    function CorrectSpellingAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/CorrectSpelling",
+                type: "POST",
+                data: {
+                    "text":$("#learningContent").val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function LogoutAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Logout",
+                type: "GET",
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    $(".immersive-reader-button").click(function () {
+        handleLaunchImmersiveReader();
+    });
+
+    $("#getFileContent").click(function () {
+        AnalyzeFileAsync()
+            .then(function(response){
+              $("#learningContent").val(response);//console.log(response)
+            });
+    });
+
+    $("#CorrectSpelling").click(function (){
+        CorrectSpellingAsync()
+            .then(function(response){
+                $("#learningContent").val(response);
+            });
+    });
+
+    $("#Logout").click(function(){
+        LogoutAsync()
+        .then(function(response){
+            if(response == "success")
+                window.location.replace("/");
+        });
+    });
+
+    function handleLaunchImmersiveReader() {
+        getTokenAndSubdomainAsync()
+            .then(function (response) {
+                const token = response["token"];
+                const subdomain = response["subdomain"];
+                const data = {
+                    chunks: [{
+                        content: $("#learningContent").val(),
+                        mimeType: "text/html"
+                    }]
+                };
+                const options = {
+                    "onExit": exitCallback,
+                    "uiZIndex": 2000
+                };
+                ImmersiveReader.launchAsync(token, subdomain, data, options)
+                    .catch(function (error) {
+                        alert("Error in launching the Immersive Reader. Check the console.");
+                        console.log(error);
+                    });
+            })
+            .catch(function (error) {
+                alert("Error in getting the Immersive Reader token and subdomain. Check the console.");
+                console.log(error);
+            });
+    }
+
+    function exitCallback() {
+        console.log("This is the callback function. It is executed when the Immersive Reader closes.");
+    }
