@@ -1,0 +1,173 @@
+#%RAML 1.0
+---
+title: cognitive
+baseUri: https://northeurope.api.cognitive.microsoft.com
+/vision/v2.0/ocr:
+  post:
+    description: Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+    body:
+      application/json:
+         example: |
+          {
+            "url":"https://lh3.googleusercontent.com/proxy/9P-PD_fc3LuRGUPkybF7qgzZYEyrxsC4c6RxRfQfDHjYr4e1bOqRkEddiwgpbvPaCHT0qjK3sBCZ4V9GFnKj1gQ-NfQWbxzSMGlr9EXLZELzB2gtMiF7oGdWujkRgj0nIEM"
+            "language":"en",
+            "detectOrientation"=true
+          }  
+    responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "language": "en",
+                    "textAngle": 0.0,
+                    "orientation": "Up",
+                    "regions": [{
+                        "boundingBox": "13,12,487,198",
+                        "lines": [{
+                        "boundingBox": "86,12,406,32",
+                        "words": [{
+                            "boundingBox": "86,13,75,31",
+                            "text": "This"
+                        }, {
+                            "boundingBox": "177,14,25,30",
+                            "text": "is"
+                        }, {
+                            "boundingBox": "215,13,59,31",
+                            "text": "the"
+                        }, {
+                            "boundingBox": "288,13,74,31",
+                            "text": "first"
+                        }, {
+                            "boundingBox": "376,13,63,31",
+                            "text": "line"
+                        }, {
+                            "boundingBox": "454,12,38,32",
+                            "text": "of"
+                        }]
+                        }, {
+                        "boundingBox": "13,68,334,41",
+                        "words": [{
+                            "boundingBox": "13,68,67,31",
+                            "text": "this"
+                        }, {
+                            "boundingBox": "93,72,72,27",
+                            "text": "text"
+                        }, {
+                            "boundingBox": "178,68,169,41",
+                            "text": "example."
+                        }]
+                        }, {
+                        "boundingBox": "86,123,414,31",
+                        "words": [{
+                            "boundingBox": "86,123,76,31",
+                            "text": "This"
+                        }, {
+                            "boundingBox": "177,124,25,30",
+                            "text": "is"
+                        }, {
+                            "boundingBox": "215,123,59,31",
+                            "text": "the"
+                        }, {
+                            "boundingBox": "289,123,131,31",
+                            "text": "second"
+                        }, {
+                            "boundingBox": "437,123,63,31",
+                            "text": "line"
+                        }]
+                        }, {
+                        "boundingBox": "14,178,315,32",
+                        "words": [{
+                            "boundingBox": "14,178,38,32",
+                            "text": "of"
+                        }, {
+                            "boundingBox": "62,178,59,32",
+                            "text": "the"
+                        }, {
+                            "boundingBox": "136,187,99,23",
+                            "text": "same"
+                        }, {
+                            "boundingBox": "248,182,81,28",
+                            "text": "text."
+                        }]
+                        }]
+                    }]
+                }
+        400:
+          body:
+            application/json:
+              example: |                
+                {
+                    "code": "InvalidImageUrl",
+                    "requestId": "c44e02ac-4879-495c-b26a-31251d90c9a9",
+                    "message": "Image URL is not accessible."
+                }
+        401:
+          body:
+            application/json:
+              example: |
+                {
+                   "error":{
+                       "code":"401",
+                       "message":"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource."
+                    }
+                }
+/bing/v7.0/spellcheck:
+  get:
+    description: This type of request checks the text string for spelling and grammar errors.
+    body:
+      application/json:
+         example: |
+           {
+             "text":"Bill Gatas",
+             "mode":"spell"
+           }  
+    responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "_type": "SpellCheck",
+                    "flaggedTokens": [
+                        {
+                            "offset": 5,
+                            "token": "Gatas",
+                            "type": "UnknownToken",
+                            "suggestions": [
+                                {
+                                    "suggestion": "Gates",
+                                "score": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+                
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                    "_type": "ErrorResponse",
+                    "instrumentation": {},
+                    "errors": [
+                        {
+                            "code": "InvalidRequest",
+                            "subCode": "ParameterMissing",
+                            "message": "Required parameter is missing.",
+                            "parameter": "text"
+                        }
+                    ]
+                }
+        401:
+          body:
+            application/json:
+              example: |
+                {
+                    "error":
+                    {
+                        "code":"401",
+                        "message":"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource."
+                    }
+                }
