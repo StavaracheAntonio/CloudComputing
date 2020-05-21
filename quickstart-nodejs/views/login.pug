@@ -1,0 +1,258 @@
+doctype html
+html
+   head
+      title Immersive Reader Homework Application
+      
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css')
+
+      // A polyfill for Promise is needed for IE11 support.
+      script(src='https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js')
+     
+      script(data-ad-client="ca-pub-6556409701318764" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+
+      script(src='https://contentstorage.onenote.office.net/onenoteltir/immersivereadersdk/immersive-reader-sdk.1.0.0.js')
+      script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+
+      style(type="text/css").
+        body {
+            background-image: url("bg.jpg");
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .login {
+            padding: 148px 24px;
+            background-color: white;
+            border-radius: 10px;
+
+            border: azure;
+            border-style: blueviolet;
+            border-width: 5px;
+            height: 250px;
+            margin-top: -125px;
+            width: 400px;
+            margin-left: -200px;
+            position: absolute;
+            left: 20%;
+            top: 40%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+        .login p {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 8px 0;
+            color: #0E6C8E;
+        }
+        .loginInputText {
+            width: 75%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+        }
+
+        .loginRegisterButtons {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+        }
+        .login button {
+            margin: 6px 0;
+            display: block;
+            cursor: pointer;
+            color: white;
+            font-size: 1.125em;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #0E6C8E;
+            padding: 8px 8px;
+        }
+        footer {
+            position: fixed;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-evenly;
+            width: 100%;
+            padding: 0px 0;
+            background-color: #0E6C8E;
+            bottom: 0;
+        }
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            margin: 0px 48px;
+        }
+
+        .footer-item ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .footer-item ul li {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin-right: 84px;
+        }
+
+        .footer-item ul li h4 {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .footer-item ul li h4:first-child {
+            font-weight: bold;
+        }
+
+        .footer-item a {
+            display: block;
+            width: 24px;
+            height: 24px;
+            background-color: #0C5D7A;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-item a:hover {
+            background-color: rgb(10, 79, 104);
+        }
+
+        .footer-item a img {
+            border-radius: 50%;
+            width: 60%;
+            height: 60%;
+        }
+
+        .footer-item h2 {
+            margin-bottom: 0px;
+            color: white;
+        }
+
+        .footer-item h4 {
+            font-weight: normal;
+            color: white;
+        }
+        }
+
+
+
+   body(class="body")
+      div(class="login")
+        div(class="loginInputText")
+          p(style="align-self:center") Username
+          input(id="Username" type="text")
+          p(style="align-self:center") Password
+          input(id="Password" type="password")
+          p(id="ErrorText" style="align-self:center;color:red;")
+        div(class="loginRegisterButtons")
+          button(id="LogIn" type="button") Log in
+          button(id="Register" type="button") Register
+      footer(class="footer")
+        div(class="footer-item")
+          h2 FriendlyText team
+            ul
+              li
+                h4 Gafita Andrei
+                h4 andgafita@gmail.com
+              li
+                h4 Stavarache Antonio
+                h4 stavarache.antonio@gmail.com
+        div(class="footer-item")
+          h2 Contact
+            a(class="shadow")
+
+
+
+script(type="text/javascript").
+
+    function EnableLoginError(){
+        document.getElementById("ErrorText").innerHTML = "Invalid username or password!";
+    }
+
+    function EnableRegisterError(){
+        document.getElementById("ErrorText").innerHTML = "User already exists!";
+    }
+
+    function LoginAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Login",
+                type: "POST",
+                data: {
+                    "username":$("#Username").val(),
+                    "password":$("#Password").val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function RegisterAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Register",
+                type: "POST",
+                data: {
+                    "username":$("#Username").val(),
+                    "password":$("#Password").val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    $("#LogIn").click( function (){
+        LoginAsync()
+            .then(function(response){
+              if(response == "userExists")
+                window.location.replace("/");
+              else EnableLoginError();
+            }); 
+    });
+
+    $("#Register").click( function (){
+        RegisterAsync()
+            .then(function(response){
+              console.log(response);
+              if(response == "userRegistered")
+                window.location.replace("/");
+              else if(response == "dbError"){}
+              else 
+                EnableRegisterError();
+            }); 
+    });

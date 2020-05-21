@@ -1,0 +1,373 @@
+doctype html
+html
+   head
+      title Immersive Reader Homework Application
+
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css')
+
+      script(data-ad-client="ca-pub-6556409701318764" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+
+      // A polyfill for Promise is needed for IE11 support.
+      script(src='https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js')
+
+      script(src='https://contentstorage.onenote.office.net/onenoteltir/immersivereadersdk/immersive-reader-sdk.1.0.0.js')
+      script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+
+      style(type="text/css").
+        .immersive-reader-button {
+            margin: 6px 0;
+            display: block;
+            cursor: pointer;
+            color: white;
+            font-size: 1.125em;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #0E6C8E;
+            padding: 8px 8px;
+            float: right;
+        }
+        ::-webkit-file-upload-button {
+            margin: 6px 0;
+            display: block;
+            cursor: pointer;
+            color: white;
+            font-size: 1.125em;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #0E6C8E;
+            padding: 8px 8px;
+            float: left;
+        }
+        #getFileContent {
+          margin: 6px 0;
+          display: block;
+          cursor: pointer;
+          color: white;
+          font-size: 1.125em;
+          font-weight: bold;
+          border-radius: 10px;
+          background-color: #0E6C8E;
+          padding: 8px 8px;
+          float: left;
+        }
+        .textarea-container {
+            display:inline-block;
+            position:relative;
+        }
+        .textarea-container textarea {
+            display:block;
+            margin: 12px 0;
+            background-color: white;
+            border-radius: 10px;
+            border: 3px;
+            border: solid gray;
+            font-size: 1em;
+            font-weight: bold;
+            padding-left: 12px;
+        }
+        .textarea-container button {
+            position:absolute;
+            bottom:10px;
+            right:10px;
+        }
+        button {
+            margin: 6px 0;
+            display: block;
+            cursor: pointer;
+            color: white;
+            font-size: 1.125em;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #0E6C8E;
+            padding: 8px 8px;
+        }
+        footer {
+            position: fixed;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-evenly;
+            width: 100%;
+            padding: 0px 0;
+            background-color: #0E6C8E;
+            bottom: 0;
+        }
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            margin: 0px 48px;
+        }
+
+        .footer-item ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .footer-item ul li {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin-right: 84px;
+        }
+
+        .footer-item ul li h4 {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .footer-item ul li h4:first-child {
+            font-weight: bold;
+        }
+
+        .footer-item a {
+            display: block;
+            width: 24px;
+            height: 24px;
+            background-color: #0C5D7A;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-item a:hover {
+            background-color: rgb(10, 79, 104);
+        }
+
+        .footer-item a img {
+            border-radius: 50%;
+            width: 60%;
+            height: 60%;
+        }
+
+        .footer-item h2 {
+            margin-bottom: 0px;
+            color: white;
+        }
+
+        .footer-item h4 {
+            font-weight: normal;
+            color: white;
+        }
+        }
+
+   body
+      div(class="container")
+        br
+        form(id="fileForm" enctype="multipart/form-data")
+          input(id="file" type="file" name="file")
+          button(id="getFileContent" data-button-style="iconAndText" data-locale="en" type="button") Examine File        
+        button(class="immersive-reader-button" data-button-style="iconAndText" data-locale="en")
+      div(class="CenterElements" style="display: flex;flex-direction: column;align-items: center;")
+        div(class="textarea-container")
+          textarea(id="learningContent", name="learningContent", cols="50", rows="10") I sea you over thr my frnd, hello
+          button(id="CorrectSpelling" type="button") Correct spelling 
+        div(id="BuyForm" style="position:absolute;top:50%;display:flex;flex-direction:column;align-items:center;")
+          p(id="ErrorText" style="align-self:center;color:red;")
+          button(id="Logout" type="button") Log out
+          form( action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top")
+            input( type="hidden" name="cmd" value="_s-xclick")
+            input( type="hidden" name="hosted_button_id" value="S4MC75MQ3M5P4")
+            input( type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!")
+            img( alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1")
+          A(HREF="https://www.paypal.com/cgi-bin/webscr?cmd=_subscr-find&alias=2MNH7WCMNRZNE")
+            IMG(id="unsubscribeButton" SRC="https://www.paypalobjects.com/en_US/i/btn/btn_unsubscribe_LG.gif" BORDER="0")
+      footer(class="footer")
+        div(class="footer-item")
+          h2 FriendlyText team
+             ul
+                li
+                   h4 Gafita Andrei
+                   h4 andgafita@gmail.com
+                li
+                   h4 Stavarache Antonio
+                   h4 stavarache.antonio@gmail.com
+        div(class="footer-item")
+          h2 Contact
+             a(class="shadow")
+      
+
+
+
+
+
+
+script(type="text/javascript").
+
+  function EnableTrialError(){
+    document.getElementById("ErrorText").innerHTML = "Your free trial is over!";
+  }
+
+  function getTokenAndSubdomainAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/GetTokenAndSubdomain",
+                type: "GET",
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function AnalyzeFileAsync() {
+        var fd = new FormData();
+        var file = $('#file')[0].files[0]; 'image',
+        fd.append('file', file);
+        console.log(fd.get('file'))
+        console.log(file);
+
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/AnalyzeFile",
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+    
+    function CorrectSpellingAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/CorrectSpelling",
+                type: "POST",
+                data: {
+                    "text":$("#learningContent").val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function LogoutAsync() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Logout",
+                type: "GET",
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function unsubscribe() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/unsubscribe",
+                type: "GET",
+                success: function (data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                },
+                error: function (err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    $(".immersive-reader-button").click(function () {
+        handleLaunchImmersiveReader();
+    });
+
+    $("#unsubscribeButton").click(function(){
+       unsubscribe().then(function(response){});
+    });
+
+    $("#getFileContent").click(function () {
+        AnalyzeFileAsync()
+            .then(function(response){
+              $("#learningContent").val(response);//console.log(response)
+            });
+    });
+
+    $("#CorrectSpelling").click(function (){
+        CorrectSpellingAsync()
+            .then(function(response){
+                $("#learningContent").val(response);
+            });
+    });
+
+    $("#Logout").click(function(){
+        LogoutAsync()
+        .then(function(response){
+            if(response == "success")
+                console.log(response);
+                window.location.replace("/");
+        });
+    });
+
+    function handleLaunchImmersiveReader() {
+        getTokenAndSubdomainAsync()
+            .then(function (response) {
+                if(response == "unauthorized"){
+                    EnableTrialError();
+                    return
+                }
+                const token = response["token"];
+                const subdomain = response["subdomain"];
+                const data = {
+                    chunks: [{
+                        content: $("#learningContent").val(),
+                        mimeType: "text/html"
+                    }]
+                };
+                const options = {
+                    "onExit": exitCallback,
+                    "uiZIndex": 2000
+                };
+                ImmersiveReader.launchAsync(token, subdomain, data, options)
+                    .catch(function (error) {
+                        alert("Error in launching the Immersive Reader. Check the console.");
+                        console.log(error);
+                    });
+            })
+            .catch(function (error) {
+                alert("Error in getting the Immersive Reader token and subdomain. Check the console.");
+                console.log(error);
+            });
+    }
+
+    function exitCallback() {
+        console.log("This is the callback function. It is executed when the Immersive Reader closes.");
+    }
